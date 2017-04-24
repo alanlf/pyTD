@@ -1,0 +1,3 @@
+#Used to bind object names to images, format object_name:image_name
+road:road.png
+grass:grass.png
