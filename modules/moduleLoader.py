@@ -66,3 +66,32 @@ def load_image_bind(path): #Loads image bind - image names assigned to object/ti
         file.close()
 
     return image_bind
+
+def load_terrain(path): #Loads terrain map, rectangle out of character representing tiles using terrain encoding
+    """Terrain must contain characters forming rectangle. Each character represents one tile of the terrain.
+    Commets are created by adding # at the beginning of the line
+    """
+
+    try:
+        file = open(path, "r") #Opens file containing terrain map
+    except IOError: #File wasn't found
+        raise
+        return "File cannot be opened"
+
+    try:
+        terrain = [] #Two dimensional list containing whole terrain map with each tile represented by one character
+        
+        for line in file: #Iterates over all lines in the file
+            if not line[0] == "#": #The line is not a comment line
+                if "\n" in line: #Removes line ending if it is in the line
+                    line = line[:-1]
+
+                terrain.append(list(line))
+                
+
+    finally: #Closes the file always, even when exception/error has occured
+        file.close()
+
+    return terrain
+
+    

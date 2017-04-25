@@ -7,6 +7,8 @@ from mini_modules import moduleFileDialog #Contains function file_dialog() used 
 
 from modules import moduleLoader
 
+import os #Used mostly to work with paths
+
 #color definition
 black    = (   0,   0,   0)
 white    = ( 255, 255, 255)
@@ -17,8 +19,12 @@ violet   = ( 128,   0, 127)
 yellow   = ( 255, 255,   0)
 
 class TerrainEditor():
-    def __init__(self):
+    def __init__(self,automatic_mode=True):
         pygame.init()
+
+        self.automatic_mode = automatic_mode #Automatically loads additional required files after getting path of terrain map
+        #If it is True, user has to choose terrain.txt file in the level folder and TerrainEditor will automatically
+        #choose terrain_encoding.txt and image_bind.txt files (This works when path to terrain is provided as argument too)
         
         self.screen_size = (400,400) #Sets starting real screen size and constant drawing screen size
         self.real_screen = pygame.display.set_mode(self.screen_size,RESIZABLE) #Real screen is the surface shown to user - its size can be changed by user
@@ -54,10 +60,35 @@ class TerrainEditor():
         pygame.display.flip() #Flips the real screen into window so it will be visible to the user
         self.clock.tick(self.fps_limit) #Makes game clock now that one drawing frame has passed and sets FPS limit
 
-    def run(self):
+    def run(self,path_to_terrain_file=""):
+        #Obtains required paths
+        if self.automatic_mode: #Automatic/Semiautomatic mode
+            if path_to_terrain_file:
+                terrain_path = path_to_terrain_file
+            else: #User has to choose file with terrain because it hasn't been provided as argument
+                terrain_path = moduleFileDialog.file_dialog("Choose file with terrain")
+
+            level_folder = os.path.dirname(terrain_path) #Obtains name of level folder in which the files are
+            
+            #Creates paths by adding terrain_encoding.txt and image_bind.txt to level folder
+            path_to_terrain_encoding = os.path.join(level_folder,"terrain_encoding.txt")
+            path_to_image_bind = os.path.join(level_folder,"image_bind.txt")
+
+        else: #Manual mode
+            #User has to choose file with terrain
+            terrain_path = moduleFileDialog.file_dialog("Choose file with terrain")
+            #Loads terrain_encoding and image_bind but user has to select them first
+            path_to_terrain_encoding = moduleFileDialog.file_dialog("Choose file with terrain encoding")
+            path_to_image_bind = moduleFileDialog.file_dialog("Choose file with image bind")
+
+
+        
+        #Loading itself
         #Loads terrain_encoding and image_bind
-        self.terrain_encoding = moduleLoader.load_terrain_encoding(moduleFileDialog.file_dialog("Choose file with terrain encoding"))
-        self.image_bind = moduleLoader.load_image_bind(moduleFileDialog.file_dialog("Choose file with image bind"))
+        self.terrain_encoding = moduleLoader.load_terrain_encoding(path_to_terrain_encoding)
+        self.image_bind = moduleLoader.load_image_bind(path_to_image_bind)
+        #Loads terrain - will be [] if it is new file
+        self.terrain = moduleLoader.load_terrain(terrain_path)
         
         try:
             self.cycle = True
