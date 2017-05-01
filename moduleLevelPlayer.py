@@ -20,24 +20,27 @@ violet   = ( 128,   0, 127)
 yellow   = ( 255, 255,   0)
 
 #Constants
-TILE_SIZE = 64
+TILE_SIZE = 40
 DRAWING_SCREEN_SIZE = (640,640)
 LOGIC_CYCLE_INTERVAL = 25 #Interval of logic cycles in miliseconds (1/1000 of the second)
 
 class LevelPlayer():
-    def __init__(self):
-        pygame.init()
+    def __init__(self,real_screen=None):
+        if not real_screen: #If real_screen hasn't been provided, pygame has to be intialized and real_screen created
+            pygame.init()
+            
+            display_info = pygame.display.Info()
+            self.screen_size = [display_info.current_w,display_info.current_h]
+            smaller_dimension = min(self.screen_size)
+            self.screen_size = (int(smaller_dimension/2),int(smaller_dimension/2))
+            #The window will be square with side length of half of the display dimesions 
+            self.real_screen = pygame.display.set_mode(self.screen_size,RESIZABLE)#Real screen is the surface shown to user - its size can be changed by user
+            pygame.display.set_caption("TD Level Player") #Sets caption
 
-        display_info = pygame.display.Info()
-        self.screen_size = [display_info.current_w,display_info.current_h]
-        smaller_dimension = min(self.screen_size)
-        self.screen_size = (int(smaller_dimension/2),int(smaller_dimension/2))
-        #The window will be square with side length of half of the display dimesions 
-        self.real_screen = pygame.display.set_mode(self.screen_size,RESIZABLE) #Real screen is the surface shown to user - its size can be changed by user
-        
+        else:
+            self.real_screen = real_screen
+            
         self.screen = pygame.Surface(DRAWING_SCREEN_SIZE) #Screen is surface that is then scaled and blit onto the real screen - it has constant size
-
-        pygame.display.set_caption("TD Terrain Editor") #Sets caption
 
         self.clock = moduleGameClock.GameClock(LOGIC_CYCLE_INTERVAL) #Clock used to regulate FPS and to hold constant game speed
         self.fps_limit = 60 #Limits FPS to prevent unnecessary usage of CPU/GPU

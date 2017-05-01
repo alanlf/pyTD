@@ -1,4 +1,8 @@
-#This module handles loading that is necessary for game
+#This module handles some of the loading that is necessary for game
+
+#Custom exceptions/errors
+class TerrainHasWrongSizeError(Exception):
+    pass
 
 def load_terrain_encoding(path): #Loads terrain encoding - tile names assigned to terrain map characters
     """Terrain encoding file must contain terrain map character:tile name pairs.
@@ -67,14 +71,15 @@ def load_image_bind(path): #Loads image bind - image names assigned to object/ti
 
     return image_bind
 
-def load_terrain(path): #Loads terrain map, rectangle out of character representing tiles using terrain encoding
+def load_terrain(path,max_size=[]): #Loads terrain map, rectangle out of characters representing tiles using terrain encoding
     """Terrain must contain characters forming rectangle. Each character represents one tile of the terrain.
     Commets are created by adding # at the beginning of the line
     """
+    #max_size is iterable containing width and height of terrain in tiles, all terrains must be of that size
 
     try:
         file = open(path, "r") #Opens file containing terrain map
-    except IOError: #File wasn't found
+    except IOError: #File wasn't found or cannot be opened
         raise
         return "File cannot be opened"
 
@@ -87,6 +92,9 @@ def load_terrain(path): #Loads terrain map, rectangle out of character represent
                     line = line[:-1]
 
                 terrain.append(list(line))
+
+        if max_size and (len(terrain) != max_size[1] or len(terrain[0]) != max_size[0]): #terrain has wrong size, error is raised
+            raise TerrainHasWrongSizeError()
                 
 
     finally: #Closes the file always, even when exception/error has occured
