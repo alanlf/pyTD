@@ -1,0 +1,14 @@
+#Configuration file used to store level player configuration
+#Spaces will be removed during loading so they can be used freely
+#Comments must begin with #
+#
+#TILE_SIZE - sets size of tile in pixels
+TILE_SIZE = 40
+#
+#MAX_TERRAIN_WIDTH - sets max. width of terrain in tile count
+#MAX_TERRAIN_HEIGHT - sets max. height of terrain in tile #count
+MAX_TERRAIN_WIDTH = 15
+MAX_TERRAIN_HEIGHT = 15
+#
+#LOGIC_CYCLE_INTERVAL - interval of logic cycles in miliseconds (1/1000 of the second)
+LOGIC_CYCLE_INTERVAL = 25

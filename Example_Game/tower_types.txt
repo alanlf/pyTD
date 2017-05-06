@@ -1,0 +1,7 @@
+{
+ "Arrow_tower_1": {
+  "Attack": 2,
+  "Slowness": 3,
+  "Cost": 50 
+ }
+}

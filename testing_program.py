@@ -9,6 +9,12 @@ class CustomError(Exception):
 
 #raise CustomError("It does work")
 
+value = "a"
+try:
+    value = int(value)
+except ValueError:
+    print(value)
+
 for i in range(1):
     root = tk.Tk()
     root.withdraw()

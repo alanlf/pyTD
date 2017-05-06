@@ -1,5 +1,7 @@
 #This module handles some of the loading that is necessary for game
 
+import json #Used to load json files
+
 #Custom exceptions/errors
 class TerrainHasWrongSizeError(Exception):
     pass
@@ -71,11 +73,11 @@ def load_image_bind(path): #Loads image bind - image names assigned to object/ti
 
     return image_bind
 
-def load_terrain(path,max_size=[]): #Loads terrain map, rectangle out of characters representing tiles using terrain encoding
+def load_terrain(path,MAX_TERRAIN_SIZE=[]): #Loads terrain map, rectangle out of characters representing tiles using terrain encoding
     """Terrain must contain characters forming rectangle. Each character represents one tile of the terrain.
     Commets are created by adding # at the beginning of the line
     """
-    #max_size is iterable containing width and height of terrain in tiles, all terrains must be of that size
+    #MAX_TERRAIN_SIZE is iterable containing width and height of terrain in tiles, all terrains must be of that size
 
     try:
         file = open(path, "r") #Opens file containing terrain map
@@ -93,7 +95,7 @@ def load_terrain(path,max_size=[]): #Loads terrain map, rectangle out of charact
 
                 terrain.append(list(line))
 
-        if max_size and (len(terrain) != max_size[1] or len(terrain[0]) != max_size[0]): #terrain has wrong size, error is raised
+        if MAX_TERRAIN_SIZE and (len(terrain) != MAX_TERRAIN_SIZE[1] or len(terrain[0]) != MAX_TERRAIN_SIZE[0]): #terrain has wrong size, error is raised
             raise TerrainHasWrongSizeError()
                 
 
@@ -102,4 +104,54 @@ def load_terrain(path,max_size=[]): #Loads terrain map, rectangle out of charact
 
     return terrain
 
+def load_level_player_config(path):
+    """Loads level player configuration into dictionary.
+
+    It opens file using the path provided and loads
+    everything infront of = as key and behind it as value
+    """
+
+    try:
+        file = open(path, "r") #Opens file containing level_player_config
+    except IOError: #File wasn't found or cannot be opened
+        raise
+        return "File cannot be opened"
+
+    try:
+        level_player_config = {}
+        
+        for line in file: #Iterates over all lines in the file
+            if not line[0] == "#": #The line is not a comment line
+                if "\n" in line: #Removes line ending if it is in the line
+                    line = line[:-1]
+
+                line = line.replace(" ","") #Removes spaces from the line
+                key, value = line.split("=") #Splits the line on the = character, string before is key, string after value
+
+                #Tries to convert value to int
+                try:
+                    value = int(value)
+                except ValueError:
+                    pass
+                
+                level_player_config[key] = value #Puts the value assigned to key into dictionary
+
+    finally: #Closes the file always, even when exception/error has occured
+        file.close()
+
+    return level_player_config
+
+def load_enemy_types(path):
+    """Loads enemy types from JSON file specified by path"""
+    with open(path,"r") as file:
+        enemy_types = json.load(file)
+
+    return enemy_types
+
+def load_tower_types(path):
+    """Loads tower types from JSON file specified by path"""
+    with open(path,"r") as file:
+        tower_types = json.load(file)
+
+    return tower_types
     

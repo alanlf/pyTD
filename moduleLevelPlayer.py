@@ -19,13 +19,26 @@ blue     = (   0,   0, 255)
 violet   = ( 128,   0, 127)
 yellow   = ( 255, 255,   0)
 
-#Constants
-TILE_SIZE = 40
+#Names of constants
+TILE_SIZE = "TILE_SIZE"
+MAX_TERRAIN_WIDTH = "MAX_TERRAIN_WIDTH"
+MAX_TERRAIN_HEIGHT = "MAX_TERRAIN_HEIGHT"
+
+LOGIC_CYCLE_INTERVAL = "LOGIC_CYCLE_INTERVAL" #Interval of logic cycles in miliseconds (1/1000 of the second)
 DRAWING_SCREEN_SIZE = (640,640)
-LOGIC_CYCLE_INTERVAL = 25 #Interval of logic cycles in miliseconds (1/1000 of the second)
+
 
 class LevelPlayer():
-    def __init__(self,real_screen=None):
+    def __init__(self,game_folder_path,real_screen=None):
+        #Loads level player config - it will be constant dictionary with value assigned to KEYS because they are constants
+        self.CONFIG = moduleAutoLoader.auto_load_level_player_config(game_folder_path)
+        
+        #Loads enemy types that will be then used when spawing enemies - again constant dictionary
+        self.ENEMY_TYPES = moduleAutoLoader.auto_load_enemy_types(game_folder_path)
+        
+        #Loads tower types that will be then used when building towers - again constant dictionary
+        self.TOWER_TYPES = moduleAutoLoader.auto_load_tower_types(game_folder_path)
+        
         if not real_screen: #If real_screen hasn't been provided, pygame has to be intialized and real_screen created
             pygame.init()
             
@@ -42,7 +55,7 @@ class LevelPlayer():
             
         self.screen = pygame.Surface(DRAWING_SCREEN_SIZE) #Screen is surface that is then scaled and blit onto the real screen - it has constant size
 
-        self.clock = moduleGameClock.GameClock(LOGIC_CYCLE_INTERVAL) #Clock used to regulate FPS and to hold constant game speed
+        self.clock = moduleGameClock.GameClock(self.CONFIG[LOGIC_CYCLE_INTERVAL]) #Clock used to regulate FPS and to hold constant game speed
         self.fps_limit = 60 #Limits FPS to prevent unnecessary usage of CPU/GPU
 
     def logic_frame(self):
@@ -71,7 +84,8 @@ class LevelPlayer():
 
     def run(self,level_path):
         #Uses auto_load() from moduleAutoLoader to load everything automatically
-        loaded = moduleAutoLoader.auto_load_level(level_path,TILE_SIZE)
+        loaded = moduleAutoLoader.auto_load_level(level_path,self.CONFIG[TILE_SIZE],
+                                                  (self.CONFIG[MAX_TERRAIN_WIDTH],self.CONFIG[MAX_TERRAIN_HEIGHT]))
         self.terrain, self.terrain_encoding, self.image_bind = loaded[:3]
         self.name_to_image_dict, self.terrain_surface = loaded[3:]
         
@@ -90,5 +104,5 @@ class LevelPlayer():
 
 
 if __name__ == "__main__":
-    levelPlayer = LevelPlayer()
-    levelPlayer.run("C:\\Prakticky-Vsetko\\Python_programovanie\\newTD\\Example_Game\\Levels\\Level_1")
+    levelPlayer = LevelPlayer(os.path.join(os.getcwd(),"Example_Game"))
+    levelPlayer.run(os.path.join(os.getcwd(),"Example_Game\\Levels\\Level_1"))
