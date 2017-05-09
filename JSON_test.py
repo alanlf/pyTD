@@ -1,4 +1,4 @@
-#Program used to test JSON files
+#Program used to test JSON files #@todo remove
 import json
 
 test = {"Rat":{"HP":10},"Mouse":{"HP":5}}

@@ -105,39 +105,9 @@ def load_terrain(path,MAX_TERRAIN_SIZE=[]): #Loads terrain map, rectangle out of
     return terrain
 
 def load_level_player_config(path):
-    """Loads level player configuration into dictionary.
-
-    It opens file using the path provided and loads
-    everything infront of = as key and behind it as value
-    """
-
-    try:
-        file = open(path, "r") #Opens file containing level_player_config
-    except IOError: #File wasn't found or cannot be opened
-        raise
-        return "File cannot be opened"
-
-    try:
-        level_player_config = {}
-        
-        for line in file: #Iterates over all lines in the file
-            if not line[0] == "#": #The line is not a comment line
-                if "\n" in line: #Removes line ending if it is in the line
-                    line = line[:-1]
-
-                line = line.replace(" ","") #Removes spaces from the line
-                key, value = line.split("=") #Splits the line on the = character, string before is key, string after value
-
-                #Tries to convert value to int
-                try:
-                    value = int(value)
-                except ValueError:
-                    pass
-                
-                level_player_config[key] = value #Puts the value assigned to key into dictionary
-
-    finally: #Closes the file always, even when exception/error has occured
-        file.close()
+    """Loads level player config from JSON file specified by path"""
+    with open(path,"r") as file:
+        level_player_config = json.load(file)
 
     return level_player_config
 

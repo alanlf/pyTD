@@ -1,6 +1,0 @@
-#Configuration file used to store configuration
-#Comments must begin with #
-#TILE_SIZE - sets size of tile
-TILE_SIZE=40
-#MAX_TERRAIN_SIZE - sets max. size of terrain in tile count
-MAX_TERRAIN_SIZE=15:15
