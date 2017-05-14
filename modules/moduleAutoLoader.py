@@ -1,4 +1,4 @@
-#Module used to automatically load level components - it might be necessary to modify in future if file system is changed
+#Module used to automatically load level components - it might be necessary to modify in future if FILE system is changed
 
 from modules import moduleLoader
 from modules import moduleImageLoader
@@ -11,6 +11,7 @@ TERRAIN_FILE_NAME = "terrain.txt"
 TERRAIN_ENCODING_FILE_NAME = "terrain_encoding.txt"
 IMAGE_BIND_FILE_NAME = "image_bind.txt"
 LEVEL_PLAYER_CONFIG_FILE_NAME = "level_player_config.txt"
+LEVEL_PLAYER_GUI_FILE_NAME = "level_player_GUI.txt"
 ENEMY_TYPES_FILE_NAME = "enemy_types.txt"
 TOWER_TYPES_FILE_NAME = "tower_types.txt"
 
@@ -35,9 +36,9 @@ def auto_load_level(level_path,TILE_SIZE,MAX_TERRAIN_SIZE=[]):
     return (terrain,terrain_encoding,image_bind,name_to_image_dict,terrain_surface)
 
 def auto_load_level_player_config(any_path_in_game_folder):
-    """Automatically finds file by ascending if possible and loads level player config"""
-    #Ascends in file system until it finds folder with LEVEL_PLAYER_CONFIG_FILE_NAME name
-    #or until it hits top most folder/file/drive
+    """Automatically finds FILE by ascending if possible and loads level player config"""
+    #Ascends in FILE system until it finds folder with LEVEL_PLAYER_CONFIG_FILE_NAME name
+    #or until it hits top most folder/FILE/drive
     tail = "true" #Folder on the end of the path
     path = any_path_in_game_folder
     
@@ -54,10 +55,30 @@ def auto_load_level_player_config(any_path_in_game_folder):
 
     return level_player_config
 
+def auto_load_level_player_GUI(any_path_in_game_folder):
+    """Automatically finds FILE by ascending if possible and loads level player GUI"""
+    #Ascends in FILE system until it finds folder with LEVEL_PLAYER_GUI_FILE_NAME name
+    #or until it hits top most folder/FILE/drive
+    tail = "true" #Folder on the end of the path
+    path = any_path_in_game_folder
+    
+    while tail and not os.path.isfile(os.path.join(path,LEVEL_PLAYER_GUI_FILE_NAME)):
+        path, tail = os.path.split(path) #Splits path into the path without tail and tail
+
+    if not tail: #Folder with resources wasn't found
+        raise IOError(str(LEVEL_PLAYER_GUI_FILE_NAME)+" was not found")
+        return
+
+    path = os.path.join(path,LEVEL_PLAYER_GUI_FILE_NAME)
+
+    level_player_GUI = moduleLoader.load_level_player_GUI(path)
+
+    return level_player_GUI
+
 def auto_load_enemy_types(any_path_in_game_folder):
-    """Automatically finds file by ascending if possible and loads level player config"""
-    #Ascends in file system until it finds folder with ENEMY_TYPES_FILE_NAME name
-    #or until it hits top most folder/file/drive
+    """Automatically finds FILE by ascending if possible and loads enemy types"""
+    #Ascends in FILE system until it finds folder with ENEMY_TYPES_FILE_NAME name
+    #or until it hits top most folder/FILE/drive
     tail = "true" #Folder on the end of the path
     path = any_path_in_game_folder
     
@@ -75,9 +96,9 @@ def auto_load_enemy_types(any_path_in_game_folder):
     return enemy_types
 
 def auto_load_tower_types(any_path_in_game_folder):
-    """Automatically finds file by ascending if possible and loads level player config"""
-    #Ascends in file system until it finds folder with TOWER_TYPES_FILE_NAME name
-    #or until it hits top most folder/file/drive
+    """Automatically finds FILE by ascending if possible and loads tower types"""
+    #Ascends in FILE system until it finds folder with TOWER_TYPES_FILE_NAME name
+    #or until it hits top most folder/FILE/drive
     tail = "true" #Folder on the end of the path
     path = any_path_in_game_folder
     

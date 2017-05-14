@@ -3,21 +3,21 @@ import pygame
 from pygame.locals import *
 
 from mini_modules import moduleGameClock
-from mini_modules import moduleFileDialog #Contains function file_dialog() used to select file using GUI
 
 from modules import moduleDrawing
 from modules import moduleAutoLoader
 
 import os #Used mostly to work with paths
+import traceback #Used to print exceptions when using cmd
 
 #color definition
-black    = (   0,   0,   0)
-white    = ( 255, 255, 255)
-green    = (   0, 255,   0)
-red      = ( 255,   0,   0)
-blue     = (   0,   0, 255)
-violet   = ( 128,   0, 127)
-yellow   = ( 255, 255,   0)
+BLACK    = (   0,   0,   0)
+WHITE    = ( 255, 255, 255)
+GREEN    = (   0, 255,   0)
+RED      = ( 255,   0,   0)
+BLUE     = (   0,   0, 255)
+VIOLET   = ( 128,   0, 127)
+YELLOW   = ( 255, 255,   0)
 
 #Names of constants
 TILE_SIZE = "TILE_SIZE"
@@ -25,20 +25,23 @@ MAX_TERRAIN_WIDTH = "MAX_TERRAIN_WIDTH"
 MAX_TERRAIN_HEIGHT = "MAX_TERRAIN_HEIGHT"
 
 LOGIC_CYCLE_INTERVAL = "LOGIC_CYCLE_INTERVAL" #Interval of logic cycles in miliseconds (1/1000 of the second)
-DRAWING_SCREEN_SIZE = (640,640)
 
 
 class LevelPlayer():
     def __init__(self,game_folder_path,real_screen=None):
         #Loads level player config - it will be constant dictionary with value assigned to KEYS because they are constants
         self.CONFIG = moduleAutoLoader.auto_load_level_player_config(game_folder_path)
+
+        #Loads level player GUI config
+        self.GUI_CONFIG = moduleAutoLoader.auto_load_level_player_GUI(game_folder_path)
         
         #Loads enemy types that will be then used when spawing enemies - again constant dictionary
         self.ENEMY_TYPES = moduleAutoLoader.auto_load_enemy_types(game_folder_path)
         
         #Loads tower types that will be then used when building towers - again constant dictionary
         self.TOWER_TYPES = moduleAutoLoader.auto_load_tower_types(game_folder_path)
-        
+
+        #real_screen creation - real_screen is pygame display shown to user
         if not real_screen: #If real_screen hasn't been provided, pygame has to be intialized and real_screen created
             pygame.init()
             
@@ -52,8 +55,12 @@ class LevelPlayer():
 
         else:
             self.real_screen = real_screen
-            
-        self.screen = pygame.Surface(DRAWING_SCREEN_SIZE) #Screen is surface that is then scaled and blit onto the real screen - it has constant size
+
+        #GUI creation
+        #screen is surface that is then scaled and blit onto the real screen - it has constant size
+        self.screen = pygame.Surface((self.GUI_CONFIG["screen"]["width"],self.GUI_CONFIG["screen"]["height"]))
+        #game_screen is surface used to show terrain, towers, enemies... and is blit on the screen
+        self.game_screen = pygame.Surface((self.GUI_CONFIG["game_screen"]["width"],self.GUI_CONFIG["game_screen"]["height"]))
 
         self.clock = moduleGameClock.GameClock(self.CONFIG[LOGIC_CYCLE_INTERVAL]) #Clock used to regulate FPS and to hold constant game speed
         self.fps_limit = 60 #Limits FPS to prevent unnecessary usage of CPU/GPU
@@ -73,12 +80,18 @@ class LevelPlayer():
                     self.cycle = False
 
     def drawing_frame(self):
-        self.screen.fill(black) #Fills the screen with black color
+        self.screen.fill(BLACK) #Fills the screen with BLACK color
 
-        self.screen.blit(self.terrain_surface,(0,0))
+        #game_screen drawing
+        self.game_screen.fill(BLACK) #Fills the game_screen  with BLACK color
+        self.game_screen.blit(self.terrain_surface,(0,0)) #Blits terrain on the game_screen
+        
 
-        #End of the drawing frame
-        pygame.transform.scale(self.screen,self.screen_size,self.real_screen)
+        #Blits the game_scren on the screen
+        self.screen.blit(self.game_screen,(self.GUI_CONFIG["game_screen"]["posX"],self.GUI_CONFIG["game_screen"]["posY"]))
+        
+        pygame.transform.scale(self.screen,self.screen_size,self.real_screen) #Scales and blits screen on the display
+        
         pygame.display.flip() #Flips the real screen into window so it will be visible to the user
         self.clock.tick(self.fps_limit) #Makes game clock now that one drawing frame has passed and sets FPS limit
 
@@ -104,5 +117,10 @@ class LevelPlayer():
 
 
 if __name__ == "__main__":
-    levelPlayer = LevelPlayer(os.path.join(os.getcwd(),"Example_Game"))
-    levelPlayer.run(os.path.join(os.getcwd(),"Example_Game\\Levels\\Level_1"))
+    try:
+        levelPlayer = LevelPlayer(os.path.join(os.getcwd(),"Example_Game"))
+        levelPlayer.run(os.path.join(os.getcwd(),"Example_Game\\Levels\\Level_1"))
+    except:
+        traceback.print_exc()
+    input("Press ENTER to end the program")
+

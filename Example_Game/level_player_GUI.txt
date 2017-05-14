@@ -1,0 +1,14 @@
+{
+ "screen": {
+  "posX": 0,
+  "posY": 0,
+  "height": 640,
+  "width": 640
+ },
+ "game_screen": {
+  "posX": 10,
+  "posY": 15,
+  "height": 600,
+  "width": 600
+ }
+}

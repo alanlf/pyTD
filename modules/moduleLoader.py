@@ -8,6 +8,7 @@ class TerrainHasWrongSizeError(Exception):
 
 def load_terrain_encoding(path): #Loads terrain encoding - tile names assigned to terrain map characters
     """Terrain encoding file must contain terrain map character:tile name pairs.
+
     Inside the pair, those 2 strings have to be separated by : and each pair must end with ;
     Commets are created by adding # at the beginning of the line
     """
@@ -42,6 +43,7 @@ def load_terrain_encoding(path): #Loads terrain encoding - tile names assigned t
 
 def load_image_bind(path): #Loads image bind - image names assigned to object/tile names
     """Image bind must contain object/tile name:image name pairs
+
     Inside the pair, those 2 strings have to be separated by : and each pair must end with ;
     Commets are created by adding # at the beginning of the line
     """
@@ -75,6 +77,7 @@ def load_image_bind(path): #Loads image bind - image names assigned to object/ti
 
 def load_terrain(path,MAX_TERRAIN_SIZE=[]): #Loads terrain map, rectangle out of characters representing tiles using terrain encoding
     """Terrain must contain characters forming rectangle. Each character represents one tile of the terrain.
+
     Commets are created by adding # at the beginning of the line
     """
     #MAX_TERRAIN_SIZE is iterable containing width and height of terrain in tiles, all terrains must be of that size
@@ -96,7 +99,7 @@ def load_terrain(path,MAX_TERRAIN_SIZE=[]): #Loads terrain map, rectangle out of
                 terrain.append(list(line))
 
         if MAX_TERRAIN_SIZE and (len(terrain) != MAX_TERRAIN_SIZE[1] or len(terrain[0]) != MAX_TERRAIN_SIZE[0]): #terrain has wrong size, error is raised
-            raise TerrainHasWrongSizeError()
+            raise TerrainHasWrongSizeError(path)
                 
 
     finally: #Closes the file always, even when exception/error has occured
@@ -110,6 +113,13 @@ def load_level_player_config(path):
         level_player_config = json.load(file)
 
     return level_player_config
+
+def load_level_player_GUI(path):
+    """Loads level player GUI config from JSON file specified by path"""
+    with open(path,"r") as file:
+        level_player_GUI = json.load(file)
+
+    return level_player_GUI
 
 def load_enemy_types(path):
     """Loads enemy types from JSON file specified by path"""
