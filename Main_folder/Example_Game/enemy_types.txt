@@ -4,5 +4,9 @@
  }, 
  "Mouse": {
   "HP": 5
+ },
+ "Armored slime": {
+  "HP": 50,
+  "Armor": 1
  }
 }

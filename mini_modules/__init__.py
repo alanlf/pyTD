@@ -1,2 +1,0 @@
-#Package intialization file
-pass

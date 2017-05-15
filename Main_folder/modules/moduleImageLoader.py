@@ -1,6 +1,8 @@
-#Module used to load images and assign them to their names in dictionary
+"""Module used to load images and assign them to their names in dictionary"""
 import pygame
 import os
+
+#@todo clean up and document some more
 
 #Constants
 RESOURCES_FOLDER_NAME = "Resources"
@@ -37,7 +39,7 @@ def load_images(image_bind,folder_path,TILE_SIZE):
 
     return name_to_image_dict
 
-def auto_load_images(image_bind,level_path,TILE_SIZE):
+def auto_load_images(image_bind,level_path,TILE_SIZE): #@todo move to moduleAutoLoader.py
     """Automatically finds folder by ascending with images if possible and loads images"""
     #Ascends in file system until it finds folder with RESOURCES_FOLDER_NAME name
     #or until it hits top most folder/file/drive

@@ -1,0 +1,14 @@
+This file is used to describe current state of the project.
+
+Currently game engine contains only moduleLevelPlayer.py
+that is used to load levels and modules that can be used 
+by it. 
+
+moduleLevelPlayer.py is the "game" itself currently so
+to launch the game, it is necessary to launch moduleLevelPlayer.py.
+moduleLevelPlayer.py now loads only Level_1 from the example game.
+
+Only WIP (Work in process) GUI and core functions of the LevelPlayer 
+are currently implemented but they are still far from finished.
+Terrain can be loaded shown by GUI but users can't do anything but
+close the game window yet.

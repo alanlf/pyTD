@@ -1,2 +1,0 @@
-0:grass
-1:road
