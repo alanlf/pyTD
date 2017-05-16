@@ -10,5 +10,5 @@ moduleLevelPlayer.py now loads only Level_1 from the example game.
 
 Only WIP (Work in process) GUI and core functions of the LevelPlayer 
 are currently implemented but they are still far from finished.
-Terrain can be loaded shown by GUI but users can't do anything but
+Terrain can be loaded and shown by GUI but users can't do anything but
 close the game window yet.
