@@ -10,6 +10,8 @@ from modules import moduleAutoLoader
 import os #Used mostly to work with paths.
 import traceback #Used to print exceptions when using cmd.
 
+import moduleEnemyManager #Used to control and spawn enemies.
+
 #Color definition.
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
@@ -69,7 +71,7 @@ class LevelPlayer():
         #Money variable used to store how much money can be used to construct towers.
         self.money = 0
         #Lifes variable used to store how much "life" is remaining, decreased when emeny gets to the end.
-        self.lifes = 0
+        self.lifes = 100
 
         #Variable used to store towers currently on the game_screen.
         self.towers = []
@@ -78,6 +80,7 @@ class LevelPlayer():
         self.fps_limit = 60 #Limits FPS to prevent unnecessary usage of CPU/GPU.
 
     def logic_frame(self):
+        """Used to process user input and advance game state."""
         #User events processing.
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -99,14 +102,17 @@ class LevelPlayer():
                                   mouse_position[1]/self.real_screen_size[1]*self.GUI_CONFIG["screen"]["height"])
 
         #End of user events processing.
+        self.enemyManager.logic_frame()
 
     def drawing_frame(self):
+        """Used to draw and show everything to the user."""
         self.screen.fill(BLACK) #Fills the screen with BLACK color.
 
         #game_screen drawing.
         self.game_screen.fill(BLACK) #Fills the game_screen  with BLACK color.
         self.game_screen.blit(self.terrain_surface,(0,0)) #Blits terrain on the game_screen.
-        
+
+        self.enemyManager.drawing_frame() #Calls EnemyManager drawing frame to draw enemies.
 
         #Blits the game_scren on the screen.
         self.screen.blit(self.game_screen,(self.GUI_CONFIG["game_screen"]["posX"],self.GUI_CONFIG["game_screen"]["posY"]))
@@ -123,6 +129,9 @@ class LevelPlayer():
                                                   (self.CONFIG[MAX_TERRAIN_WIDTH],self.CONFIG[MAX_TERRAIN_HEIGHT]))
         self.terrain, self.terrain_encoding, self.image_bind = loaded[:3]
         self.name_to_image_dict, self.terrain_surface = loaded[3:]
+
+        #Initializes EnemyManager for managing enemies.
+        self.enemyManager = moduleEnemyManager.EnemyManager(self,self.terrain,self.terrain_encoding)
         
         #Program cycle
         try:
@@ -142,7 +151,7 @@ if __name__ == "__main__": #Program automatically runs only when directly launch
     #Currently loads only Level_1.
     try:
         levelPlayer = LevelPlayer(os.path.join(os.getcwd(),"Example_Game"))
-        levelPlayer.run(os.path.join(os.getcwd(),"Example_Game","Levels","Level_1"))
+        levelPlayer.run(os.path.join(os.getcwd(),"Example_Game","Levels","Example_level"))
     except:
         traceback.print_exc()
     input("Press ENTER to end the program")

@@ -1,12 +1,15 @@
 {
  "Rat": {
-  "HP": 10
+  "HP": 10,
+  "Slowness": 2
  }, 
  "Mouse": {
-  "HP": 5
+  "HP": 5,
+  "Slowness": 2
  },
  "Armored slime": {
   "HP": 50,
-  "Armor": 1
+  "Armor": 1,
+  "Slowness": 4
  }
 }

@@ -1,0 +1,3 @@
+terrain_encoding.txt is JSON file containing dictionary
+with tile names (they are values) assigned to terrain map 
+characters (they are keys).

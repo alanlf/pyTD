@@ -1,0 +1,6 @@
+terrain.txt is text file containing rectangtle made
+of characters which has size smaller or equal to maximal
+size of terrain defined by the level_player_config.txt.
+Each character represents one tile using terrain_encoding.
+When the terrain is loaded, it is flipped around the diagonal
+going from top left corner to bottom right corner.

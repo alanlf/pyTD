@@ -9,71 +9,22 @@ class TerrainHasWrongSizeError(Exception):
 def load_terrain_encoding(path):
     """Loads terrain encoding - tile names assigned to terrain map characters.
 
-    Terrain encoding file must contain terrain map character:tile name pairs.
-    Inside the pair, those 2 strings have to be separated by : and each pair
-    must end with ; . Commets are created by adding # at the beginning of the
-    line.
+    Terrain encoding file must be JSON file containing dictionary with tile
+    names (values) assigned to terrain map characters (keys).
     """
-    try:
-        file = open(path, "r") #Opens file containing terrain encoding.
-    except IOError: #File wasn't found.
-        raise
-        return "File cannot be opened."
-
-    try:
-        terrain_encoding = {} #Dictionary that stores terrain map character:tile name pairs.
-        
-        for line in file: #Iterates over all lines in the file.
-            if not line[0] == "#": #Checks if the line is not a comment line.
-                if "\n" in line: #Removes line ending if it is in the line.
-                    line = line[:-1]
-
-                line = line.split(";") #Splits the line at each ; to create pair strings.
-
-                for pair in line: #Iterates over pairs in the split line.
-                    if pair: #Checks if the pair string isn't empty.
-                        pair = pair.split(":") #Splits the pair string into 2 components (terrain map character:tile name).
-                        terrain_encoding[pair[0]] = pair[1] #Adds the pair into dictionary.
-            
-
-    finally: #Closes the file always, even when exception/error has occured.
-        file.close()
+    with open(path,"r") as file:
+        terrain_encoding = json.load(file)
 
     return terrain_encoding
-        
 
 def load_image_bind(path):
     """Loads image bind - image names assigned to object/tile names.
 
-    Image bind must contain object/tile name:image name pairs. Inside
-    the pair, those 2 strings have to be separated by : and each pair
-    must end with ; . Commets are created by adding # at the beginning
-    of the line.
+    Image bind is JSON file containing dictionary with image names
+    assigned to object/tile names.
     """
-    try:
-        file = open(path, "r") #Opens file containing image bind.
-    except IOError: #File wasn't found.
-        raise
-        return "File cannot be opened."
-
-    try:
-        image_bind = {} #Dictionary that stores object/tile name:image name pairs.
-        
-        for line in file: #Iterates over all lines in the file.
-            if not line[0] == "#": #Checks if the line is not a comment line.
-                if "\n" in line: #Removes line ending if it is in the line.
-                    line = line[:-1]
-
-                line = line.split(";") #Splits the line at each ; to create pair strings .
-
-                for pair in line: #Iterates over pairs in the split line.
-                    if pair: #Checks if the pair string isn't empty.
-                        pair = pair.split(":") #Splits the pair string into 2 components (object/tile name:image name).
-                        image_bind[pair[0]] = pair[1] #Adds the pair into dictionary.
-            
-
-    finally: #Closes the file always, even when exception/error has occured.
-        file.close()
+    with open(path,"r") as file:
+        image_bind = json.load(file)
 
     return image_bind
 

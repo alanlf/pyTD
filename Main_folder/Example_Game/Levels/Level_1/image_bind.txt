@@ -1,3 +1,0 @@
-#Used to bind object names to images, format object_name:image_name
-road:road.bmp
-grass:grass.bmp

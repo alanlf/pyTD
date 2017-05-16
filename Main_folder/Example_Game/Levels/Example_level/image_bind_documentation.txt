@@ -1,0 +1,2 @@
+image_bind.txt is JSON file used to assign images to object
+or tile names.

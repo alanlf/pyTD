@@ -1,0 +1,4 @@
+{
+ "road": "road.bmp",
+ "grass": "grass.bmp"
+}
