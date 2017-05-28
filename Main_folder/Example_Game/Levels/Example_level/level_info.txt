@@ -1,1 +1,1 @@
-#Used by GameCore to identify level folders
+#Used by GameCore to identify level folders.

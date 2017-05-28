@@ -1,0 +1,1 @@
+tower_types.txt is JSON file containing all types of towers.

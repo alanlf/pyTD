@@ -1,4 +1,4 @@
-terrain.txt is text file containing rectangtle made
+terrain.txt is text file containing rectangle made
 of characters which has size smaller or equal to maximal
 size of terrain defined by the level_player_config.txt.
 Each character represents one tile using terrain_encoding.

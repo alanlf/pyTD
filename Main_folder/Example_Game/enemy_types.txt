@@ -1,15 +1,33 @@
 {
- "Rat": {
+ "Enemy_2": {
   "HP": 10,
-  "Slowness": 2
+  "Slowness": 2,
+  "Can_cross": [
+   "road",
+   "shallow_water",
+   "base"
+  ],
+  "Reward": 2
  }, 
- "Mouse": {
+ "Enemy_1": {
   "HP": 5,
-  "Slowness": 2
+  "Slowness": 2,
+  "Can_cross": [
+   "road",
+   "shallow_water",
+   "base"
+  ],
+  "Reward": 1
  },
- "Armored slime": {
+ "Armored_enemy_1": {
   "HP": 50,
-  "Armor": 1,
-  "Slowness": 4
+  "Armor": 10,
+  "Slowness": 4,
+  "Can_cross": [
+   "road",
+   "shallow_water",
+   "base"
+  ],
+  "Reward": 10
  }
 }

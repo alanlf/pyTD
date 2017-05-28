@@ -1,4 +1,7 @@
 {
  "0": "grass",
- "1": "road"
+ "1": "road",
+ "2": "water",
+ "3": "shallow_water",
+ "B": "base"
 }

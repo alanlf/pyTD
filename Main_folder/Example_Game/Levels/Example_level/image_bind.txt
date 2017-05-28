@@ -1,4 +1,10 @@
 {
  "road": "road.bmp",
- "grass": "grass.bmp"
+ "grass": "grass.bmp",
+ "water": "water.bmp",
+ "shallow_water": "shallow_water.bmp",
+ "base": "base.bmp",
+ "Enemy_1": "Enemy_1.png",
+ "Enemy_2": "Enemy_2.png",
+ "Armored_enemy_1": "Armored_enemy_1.png"
 }

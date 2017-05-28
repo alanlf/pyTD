@@ -1,0 +1,38 @@
+enemy_types.txt is JSON file containing all types of enemies.
+The types of enemies are contained in dictionary with enemy names as keys
+and dictionaries with parameters as values.
+Format is then:
+{
+ "enemy_name": {
+  "first_parameter_key": value,
+  "second_parameter_key": value
+ },
+ "another_enemy_name": {
+  "first_parameter_key": value,
+  "second_parameter_key": value
+ }
+}
+
+Parameters for enemies are:
+"HP": integer - required
+ How much hitpoints will the enemy have when it is created.
+ Hitpoints are lowered when the enemy is damaged by any damage
+ source. When enemy has less than 1 hitpoint, it is removed
+ and player gets reward for destroying enemy.
+
+"Slowness": integer - required
+ How many logic cycles does the enemy need to move from one terrain
+ tile to another one.
+
+"Can_cross": list - required
+ Describes which terrain tiles can be crossed by the enemy.
+ Order of tiles in the list does not matter, use tile names
+ not tile characters from the map. Tile enemies need to reach
+ to decrease player lives must be in this list.
+
+"Reward": integer - required
+ How much "money" will player get when this enemy is destroyed.
+
+"Armor": integer
+ How much damage from damage source will be ignored. Damage sources
+ can decrease armor using "Armor_penetration".

@@ -70,7 +70,7 @@ class LevelPlayer():
 
         #Money variable used to store how much money can be used to construct towers.
         self.money = 0
-        #Lifes variable used to store how much "life" is remaining, decreased when emeny gets to the end.
+        #Lifes variable used to store how much "life" is remaining, decreased when enemy gets to the end.
         self.lifes = 100
 
         #Variable used to store towers currently on the game_screen.
@@ -124,16 +124,22 @@ class LevelPlayer():
 
     def run(self,level_path):
         """Used to load and play level."""
-        #Uses auto_load() from moduleAutoLoader to load everything automatically.
+        #Uses auto_load() from moduleAutoLoader to load nearly everything automatically.
         loaded = moduleAutoLoader.auto_load_level(level_path,self.CONFIG[TILE_SIZE],
                                                   (self.CONFIG[MAX_TERRAIN_WIDTH],self.CONFIG[MAX_TERRAIN_HEIGHT]))
         self.terrain, self.terrain_encoding, self.image_bind = loaded[:3]
         self.name_to_image_dict, self.terrain_surface = loaded[3:]
 
+        #Loads enemy_waves - list containing all enemy waves.
+        self.enemy_waves = [[["Enemy_1",10,4,1],["Enemy_2",2,4,1]]]
+
+        self.destination = (11,6) #Stores position that enemies want to reach.
+
         #Initializes EnemyManager for managing enemies.
-        self.enemyManager = moduleEnemyManager.EnemyManager(self,self.terrain,self.terrain_encoding)
+        self.enemyManager = moduleEnemyManager.EnemyManager(self,self.terrain,self.terrain_encoding,
+                                                            self.ENEMY_TYPES,self.enemy_waves,self.destination)
         
-        #Program cycle
+        #Program cycle.
         try:
             self.cycle = True
             
@@ -148,7 +154,7 @@ class LevelPlayer():
 
 
 if __name__ == "__main__": #Program automatically runs only when directly launched.
-    #Currently loads only Level_1.
+    #Currently loads only Example_level.
     try:
         levelPlayer = LevelPlayer(os.path.join(os.getcwd(),"Example_Game"))
         levelPlayer.run(os.path.join(os.getcwd(),"Example_Game","Levels","Example_level"))

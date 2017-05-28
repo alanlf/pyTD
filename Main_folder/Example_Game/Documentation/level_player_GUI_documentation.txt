@@ -1,7 +1,7 @@
 File level_player_GUI.txt is JSON file used to configure level player GUI.
 It contains dictionary in which dictionaries are assigned to names of the
 parts of the level_player_GUI. 
-It constains of parts that are described below:
+It contains parts that are described below:
 "screen" - requires width, height - required
  It is used to set size of surface that is used to draw everything on it.
  It has constant size set by the arguments and at the end of the drawing
