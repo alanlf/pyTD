@@ -16,4 +16,4 @@ All source code and most of the files are contained in the
 Main_folder, in the top level are mostly information text
 files.
 
-Read other text files for further information.
+Read other text files for more information.
